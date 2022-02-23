@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="34f19558-3065-4d3a-828c-c04d72424ada" />
+	<flow name="FileProcessingFlow" doc:id="938c86ce-2e4c-425d-8c8d-1bc480108be1" >
+		<file:listener doc:name="FileProcess" doc:id="ff63dfc6-264d-42ea-adca-7bffc510b5a9" config-ref="File_Config" directory="/home/i/Mule/input" watermarkMode="MODIFIED_TIMESTAMP" autoDelete="true" moveToDirectory="/home/i/Mule/output" timeBetweenSizeCheckUnit="DAYS">
+			<scheduling-strategy >
+				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="d769f379-f470-42cb-accc-b2cfcc483dbb" message='#["\n" ++ payload]'/>
+	</flow>
+</mule>
