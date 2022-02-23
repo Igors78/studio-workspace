@@ -33,5 +33,6 @@ ns ns0 http://tempuri.org/
 			</ee:message>
 		</ee:transform>
 		<wsc:consume doc:name="Consume" doc:id="2835cb9a-e557-4497-9a28-bc75fdd0cf1f" config-ref="Web_Service_Consumer_Config" operation="Add"/>
+		<logger level="INFO" doc:name="Logger" doc:id="5773ee0c-1e5a-4832-97f7-b47a41f9c649" message='#["\nResult: " ++ payload.body.AddResponse.AddResult]'/>
 	</flow>
 </mule>
