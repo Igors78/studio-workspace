@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3153f130-063e-4ae8-8c2e-f79400adb603" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="choice_routerFlow" doc:id="fe833ad8-8d98-41c9-84b1-fdd0cee7eeff" >
+		<http:listener doc:name="/GET choice" doc:id="57ce9eef-ac32-4345-8bbd-3c4e3734bed2" config-ref="HTTP_Listener_config" path="/choice" allowedMethods="GET"/>
+		<set-variable value="#[attributes.queryParams.country]" doc:name="Set Variable" doc:id="63b92958-1268-48f7-b726-3459eccf2b31" variableName="country"/>
+		<choice doc:name="Choice" doc:id="44c81a36-8269-4958-8b8c-87e81b992c08" >
+			<when expression='#[vars.country == "USA"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="2f03d368-3218-4b25-93ae-f80769559e2c" message='#["\nThis is USA"]'/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="2eec7289-b625-4fdd-b7c0-39cd14502e9b" message='#["\nDefault choice invoked"]'/>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>
