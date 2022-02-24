@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="bedd878e-dc77-488a-a296-a31c2d82f444" />
+	<flow name="FileProcessingFlow" doc:id="af810ad3-d234-488d-8b1e-deb7ed7019d1" >
+		<file:listener doc:name="On New or Updated File" doc:id="a49e8b26-2065-45b1-aaa5-4153a6f6fddb" config-ref="File_Config" directory="/home/i/Mule/input" autoDelete="true" moveToDirectory="/home/i/Mule/output">
+			<scheduling-strategy >
+				<fixed-frequency frequency="5" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</file:listener>
+		<ee:transform doc:name="Transform Message" doc:id="40ecbbae-ed6c-4c32-b2ed-b7012631933d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+output application/java
+---
+
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="4c282515-2f55-4a88-8657-7f1a7cd05af8" >
+			<logger level="INFO" doc:name="Logger" doc:id="871bd45c-5746-4b01-bc23-986d3ebf8f80" message="#[payload]"/>
+			<set-variable value="#[payload.Username]" doc:name="Set Variable" doc:id="54fccf2e-c7e4-463a-a08c-b1217cc95275" variableName="var1"/>
+			<ee:transform doc:name="Transform Message" doc:id="f49ff430-7054-43f3-89f4-bf0075c5cbae" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/csv
+---
+payload]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<file:write doc:name="Write" doc:id="35e82cb0-0d39-461f-8c26-a5068d33ddd9" config-ref="File_Config" path='#["/home/i/Mule/output/" ++ vars.var1 ++ ".csv"]'/>
+		</foreach>
+		<logger level="INFO" doc:name="Logger" doc:id="b76d38c2-61db-45e8-850d-0dd1ea789c05" message='#["\nAfter For Each"]'/>
+	</flow>
+</mule>
