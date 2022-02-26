@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="e5bc75a7-9ab2-429c-88a4-b5de8062ca40" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="09a95eff-d0ec-4aa0-95d0-67d8855a4a59">
+		<http:request-connection host="jsonplaceholder.typicode.com" />
+	</http:request-config>
+	<flow name="Posts_Flow" doc:id="57acb7ae-3e15-4242-a7ff-aad057b83f6f" >
+		<http:listener doc:name="/GET posts" doc:id="f184d736-8adf-4d6b-b53d-f8344b47183c" config-ref="HTTP_Listener_config" path="/posts" allowedMethods="GET"/>
+		<http:request method="GET" doc:name="Get posts ws" doc:id="e5cced56-1c5c-4a88-9989-076ae84430e1" config-ref="HTTP_Request_configuration" path="/posts"/>
+		<logger level="INFO" doc:name="Logger" doc:id="07143638-9f2a-4311-9051-3f1dcc64d539" message='#["\nRetrieve posts from outside web service"]'/>
+	</flow>
+</mule>
