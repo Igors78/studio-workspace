@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="af2d275d-d42a-4883-841b-ae2c981dd42d" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="b09df390-862d-4776-8e51-220d7c4821d2" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="oleinikov" database="classicmodels"/>
+	</db:config>
+	<flow name="sql_dbFlow" doc:id="65b2e18b-1983-4e67-8760-fcee23d4de91" >
+		<http:listener doc:name="/GET sql" doc:id="f4e78302-6589-4b8c-8dd1-6b1021d8631d" config-ref="HTTP_Listener_config" path="/sql" allowedMethods="GET"/>
+		<db:select doc:name="Select" doc:id="264b226e-4f24-44f7-a660-f9362add2f02" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from customers;]]></db:sql>
+		</db:select>
+	</flow>
+</mule>
