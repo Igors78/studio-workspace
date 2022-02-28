@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="7802ddb3-43e4-4405-9494-5161fe69ccdb" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<os:object-store name="Example_Object_store" doc:name="Object store" doc:id="81dc4db0-5fa2-4741-b9f0-46fb9368ed63" />
+	<flow name="StoreFlow" doc:id="24166ffa-3aa8-4651-8b26-85b162530b48" >
+		<http:listener doc:name="/GET store" doc:id="863dc178-2e73-4781-80d3-6633f220b257" config-ref="HTTP_Listener_config" path="/store" allowedMethods="GET"/>
+		<set-variable value="#[attributes.queryParams.key]" doc:name="Set Variable key" doc:id="d4236f63-21e1-4c83-bdff-4c6fd9e1501c" variableName="key" />
+		<set-variable value="#[attributes.queryParams.value]" doc:name="Set Variable value" doc:id="b3aca95f-adc0-4d41-8ccc-b902c5f5fcad" variableName="value"/>
+		<os:store doc:name="Store key value to object store" doc:id="2da40be4-91dd-44f1-be84-1ac70d00a5fc" key="#[vars.key]" objectStore="Example_Object_store">
+			<os:value ><![CDATA[#[vars.value]]]></os:value>
+		</os:store>
+	</flow>
+	<flow name="RetrieveFlow" doc:id="c5bc31d3-c57d-4c23-b8c7-e07c6c461cdc" >
+		<http:listener doc:name="/GET retrieve" doc:id="9747d084-26dc-4308-b20d-88eed3b05a98" config-ref="HTTP_Listener_config" path="/retrieve" allowedMethods="GET"/>
+		<set-variable value="#[attributes.queryParams.key]" doc:name="Set Variable key" doc:id="cfa7100a-9fbc-4043-9700-17e57ff35b21" variableName="key" />
+		<os:retrieve doc:name="Retrieve" doc:id="b8c17343-6e1d-4755-9d29-db5dadb3a84f" objectStore="Example_Object_store" key="#[vars.key]"/>
+	</flow>
+</mule>
