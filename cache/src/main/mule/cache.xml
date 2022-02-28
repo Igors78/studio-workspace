@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="bf64c8b6-cd55-4309-a0e1-37d00bf7a898" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="84e67ec7-02b1-4a72-b9a6-14aa0ec0accb" >
+		<http:request-connection host="jsonplaceholder.typicode.com" />
+	</http:request-config>
+	<ee:object-store-caching-strategy name="Caching_Strategy" doc:name="Caching Strategy" doc:id="df81dcba-02b6-40a2-ad38-0b9463396e14" />
+	<flow name="cacheFlow" doc:id="ed77381b-6d87-4cf3-91fd-70a1d4e69f93" >
+		<http:listener doc:name="/GET data" doc:id="76accb70-b8ab-493b-97d3-17fe2620dc8a" config-ref="HTTP_Listener_config" path="/data" allowedMethods="GET"/>
+		<ee:cache doc:name="Cache" doc:id="4e905315-d051-49ef-ac75-f5354f203cf3" cachingStrategy-ref="Caching_Strategy">
+			<http:request method="GET" doc:name="Request outside data" doc:id="5e637055-ce7f-4ef3-b542-6e8ac8dd9ee3" config-ref="HTTP_Request_configuration" path="/users">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"Key" : "Value"
+}]]]></http:query-params>
+		</http:request>
+			<logger level="INFO" doc:name="Logger" doc:id="75eb8ab7-9a88-457d-a777-6b7be98be1b2" message='#["\nCACHE MISSING"]'/>
+		</ee:cache>
+		<logger level="INFO" doc:name="Logger" doc:id="57752d26-cd4e-47a1-8581-89fb772347a1" message='#["\nCACHE PRESENT"]'/>
+	</flow>
+</mule>
