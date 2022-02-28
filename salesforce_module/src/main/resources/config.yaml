@@ -1,3 +1,4 @@
-sfdc.username=oleinikovsigors@gmail.com
-sfdc.password=igors42wolfsburg
-sfdc.token=aQRHe9ooTPI1yJKGrsJZhiExs
+sfdc:
+  username: "oleinikovsigors@gmail.com"
+  password: "igors42wolfsburg"
+  token: "aQRHe9ooTPI1yJKGrsJZhiExs"
