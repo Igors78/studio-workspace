@@ -10,8 +10,9 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
 	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="787d89e1-ea71-4de6-89e3-588bb3864276" >
-		<salesforce:basic-connection username="oleinikovsigors@gmail.com" password="igors42wolfsburg" securityToken="aQRHe9ooTPI1yJKGrsJZhiExs" />
+		<salesforce:basic-connection username="${sfdc.username}" password="${sfdc.password}" securityToken="${sfdc.token}" />
 	</salesforce:sfdc-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="88c76384-2bb4-4ff5-b5b7-8bebd5d16740" file="config.properties" />
 	<flow name="salesforce_moduleFlow" doc:id="3570b663-3c5e-45c2-9967-890394787da9" >
 		<http:listener doc:name="/GET data" doc:id="c20dd7b4-cd28-41c3-930f-4bd2d3841197" config-ref="HTTP_Listener_config" path="/data" allowedMethods="GET"/>
 		<salesforce:query doc:name="Query" doc:id="931ee4a0-1e56-4f02-948b-0cf2dbbf5f96" config-ref="Salesforce_Config">
