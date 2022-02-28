@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="99941729-a006-46ef-8e23-407a1fa53421" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="round_robinFlow" doc:id="9a63b573-04f2-4850-add3-7e1abfb38435" >
+		<http:listener doc:name="\GET trigger" doc:id="9338b4b2-1166-4c5e-a80e-d2fe0b2ecada" config-ref="HTTP_Listener_config" path="/trigger" allowedMethods="GET"/>
+		<round-robin doc:name="Round Robin" doc:id="5f9561aa-d0df-4f4e-b8a3-b8c2c18d6226" >
+			<route >
+				<logger level="INFO" doc:name="Route1" doc:id="7614ebd4-f578-40f7-a80b-51b6dc6b116a" message='#["\nFlow triggered in route 1"]'/>
+			</route>
+			<route >
+				<logger level="INFO" doc:name="Route2" doc:id="d2b22227-9bee-4f25-a537-f310f0430d05" message='#["\nFlow triggered in route 2"]'/>
+			</route>
+			<route >
+				<logger level="INFO" doc:name="Route3" doc:id="04c75186-ff77-4122-92d6-8bd4903eeab9" message='#["\nFlow triggered in route 3"]'/>
+			</route>
+		</round-robin>
+	</flow>
+</mule>
