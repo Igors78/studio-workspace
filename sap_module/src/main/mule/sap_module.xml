@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="587909a8-6673-4591-abbd-2bd40e3f0582" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<sap:sap-config name="SAP_Config" doc:name="SAP Config" doc:id="48152a3e-a540-4123-bd23-e1498bd17596" >
+		<sap:simple-connection-provider-connection username="${sap.username}" password="${sap.password}" systemNumber="${sap.systemnumber}" client="${sap.clientnumber}" applicationServerHost="${sap.host}"/>
+	</sap:sap-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="0311657e-1f0e-4505-b7cf-fc606ec73458" file="config.yaml" />
+	<flow name="sap_moduleFlow" doc:id="08abebe6-bde2-4c05-90dd-e9589d3348c4" >
+		<http:listener doc:name="/GET sap" doc:id="27699563-02b6-43c4-a65c-8d87524c78bd" config-ref="HTTP_Listener_config" path="/sap" allowedMethods="GET"/>
+		<set-variable value="#[attributes.queryParams.tid]" doc:name="Set Variable" doc:id="bb981705-afd2-490e-bb5f-48de1109d48f" variableName="tid"/>
+		<sap:sync-rfc doc:name="Synchronous Remote Function Call" doc:id="63a2a8f3-be5e-460a-9b84-9f0f2f9fabf8" config-ref="SAP_Config"/>
+	</flow>
+</mule>
