@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1d95ca20-f786-4dd3-bee5-bbf2ee769578" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="1ef19b00-2d06-4ccc-a4e3-a1833f7e87ae" >
+		<email:smtp-connection host="smtp.netcorecloud.net" user="oleinikovsigors" password="oleinikovsigors_9b28f11aee91cc82a432bfa1ec51d85a" />
+	</email:smtp-config>
+	<flow name="emailFlow" doc:id="1c9e9279-7b3a-4ad9-82e1-c2203c086a61" >
+		<http:listener doc:name="/GET trigger" doc:id="dd64d7d7-f0f6-46e4-86cc-4098929fe2d6" config-ref="HTTP_Listener_config" path="/trigger"/>
+		<email:send doc:name="Send" doc:id="2d31ad71-4da7-4a77-89e7-96ca80c97714" config-ref="Email_SMTP" fromAddress="oleinikovsigors@pepisandbox.com" subject="TEST">
+			<email:to-addresses >
+				<email:to-address value="oleinikovsigors@gmail.com" />
+			</email:to-addresses>
+			<email:body >
+				<email:content ><![CDATA[Test emailing trigger from mule flow]]></email:content>
+			</email:body>
+		</email:send>
+	</flow>
+</mule>
