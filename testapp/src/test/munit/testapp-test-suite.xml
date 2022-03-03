@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="testapp-test-suite.xml" />
+	<munit:test name="testapp-test-suite-testappFlowTest" doc:id="81459604-7ba5-4390-8d7c-13b36c978e54" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="a05859b5-293e-4245-ab86-adb13d2b864c" >
+				<munit:attributes value="#[{queryParams:{var1:13,var2:14}}]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to testappFlow" doc:id="0774b24b-3bbf-4d27-ab27-ac1305ed4d4b" name="testappFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="2cacae33-1488-4608-b5ef-3c35c3e8c3e6" actual="#[payload.body.AddResponse.AddResult]" expected="27" message="MATCH"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>
